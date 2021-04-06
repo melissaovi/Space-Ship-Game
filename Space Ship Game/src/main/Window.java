@@ -127,7 +127,7 @@ public class Window extends JFrame implements Runnable{
     	 time += (now - lastTime);
     	 lastTime = now;
     	 
-    	 if(delta >=1) {
+   if(delta >=1) {
     		 update();
     		 draw();
     		 delta --;
