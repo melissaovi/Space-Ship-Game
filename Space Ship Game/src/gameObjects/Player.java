@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import graphics.Assets;
 import input.KeyBoard;
 import math.Vector2D;
+import states.GameState;
 
 public class Player extends MovingObject{
 	
@@ -19,10 +20,13 @@ public class Player extends MovingObject{
 	
 	private final double deltaAngle = 0.1;
 	
+	private GameState gameState; //para laser
+	
 	
 
-	public Player(Vector2D position, Vector2D velocity,double maxVel, BufferedImage texture) {
+	public Player(Vector2D position, Vector2D velocity,double maxVel, BufferedImage texture, GameState gameState) {
 		super(position, velocity,maxVel, texture);
+		this.gameState = gameState;
 		heading = new Vector2D(0,1);
 		acceleration = new Vector2D();
 		
@@ -30,6 +34,11 @@ public class Player extends MovingObject{
 
 	@Override
 	public void update() {	
+		
+		if(KeyBoard.SHOOT)
+		{
+			gameState.getMovingObject().add(new Laser(getCenter().add(heading.scale(Assets.player.getWidth()/2)),heading,10,angle,Assets.redLaser));
+		}
 		
 		if (KeyBoard.RIGHT)
 			angle += deltaAngle;
@@ -73,6 +82,10 @@ public class Player extends MovingObject{
 		
 		g2d.drawImage(Assets.player,at,null);
 		
+	}
+	public Vector2D getCenter() {
+		// obtener centro del jugador para que dispare desde ahí
+		return new Vector2D(position.getX()+Assets.player.getWidth()/2,position.getY()+Assets.player.getHeight()/2);
 	}
 
 }
